@@ -15,7 +15,7 @@
 
 
 close all; clear all; path(pathdef); clc;
-skipthis = 0;
+skipthis = 1;
 if skipthis
     addpath(genpath('H:\Poldrack_RFX_Project\toolboxes\neuroeflf\NeuroElf_v10_5153'));
     rootDir = 'H:\MRI_Data_self_other\subjects_3000_study\results_multi_smoothed';
