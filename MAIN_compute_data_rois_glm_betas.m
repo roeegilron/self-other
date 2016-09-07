@@ -3,7 +3,8 @@ close all; clear all; path(pathdef); clc; addpath(genpath(pwd));
 % extractData()
 % assembleDataSelfOther()
 % assembleDataWords()
-computeMultiT()
+% computeMultiT()
+compSVM()
 end
 
 function extractData()
@@ -168,6 +169,45 @@ if ~skipthis
             data = loadData(roifnms{j});
             start = tic;
             compMultiT(data,settings,params);
+            fprintf('sub %s in roi %s in %f secs\n',...
+                data.subnm,data.roinm,toc(start));
+        end
+    end
+end
+
+%% plot multi-t results single subject
+plotsinglesubresults(settings,params)
+
+%% compute multi-t second level results
+computesecondlevelresults(settings,params)
+
+%% plot second level results
+plot_group_results(settings,params)
+end
+
+function compSVM()
+%% run SVM on ROIs
+% This code run a non-direcitional SVM on ROI's.
+% First it runs svm on single subject results
+% It then averages results across subjects using stelzer permutation
+% (shuffling with replament) to compute reults on the second level.
+% code should work as is on other computers (relative directory walking)
+% and multi-platform (unix/pc/osx);
+
+%% get settings / params
+[settings, params] = getparams_svm();
+
+%% run multi SVM single subject - Non Directional
+subjects = 3000:3022;
+skipthis = 0;
+if ~skipthis
+    for i = 1:length(subjects)% loop on subs
+        sub_src_str = sprintf('data_sub-%d*.mat',subjects(i));
+        roifnms = findFilesBVQX(settings.datalocation,sub_src_str);
+        for j = 1:length(roifnms) % loop on rois
+            data = loadData(roifnms{j});
+            start = tic;
+            computeSVM(data,settings,params);
             fprintf('sub %s in roi %s in %f secs\n',...
                 data.subnm,data.roinm,toc(start));
         end

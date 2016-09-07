@@ -2,6 +2,7 @@ function data = loadData(fnm)
 load(fnm)
 dat = data; 
 clear data; 
+data.fold = fold; 
 data.data = double(dat); 
 data.labels = labels; 
 [pn,fn1] = fileparts(fnm);
