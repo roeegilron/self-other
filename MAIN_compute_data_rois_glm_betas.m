@@ -1,6 +1,7 @@
 function MAIN_compute_data_rois_glm_betas()
 close all; clear all; path(pathdef); clc; addpath(genpath(pwd));
 % extractData()
+% extractData_unique_vois();
 % assembleDataSelfOther()
 % assembleDataWords()
 % computeMultiT()
@@ -67,11 +68,81 @@ for voin = 1:numel(voi.VOI)
 end
 end
 
+function extractData_unique_vois()
+%% data preperation
+addpath(genpath(GetFullPath( fullfile('..','..','..','Poldrack_RFX_Project','toolboxes','neuroeflf','neuroElf_v10_5153'))));
+multiDir = fullfile('..','..','..','MRI_Data_self_other','subjects_3000_study','results_multi_smoothed');
+data_location = fullfile('..','...','..','MRI_Data_self_other','subjects_3000_study');
+data_location = 'H:\MRI_Data_self_other\subjects_3000_study';
+roi_data_fold = fullfile('..','data','roi_data_beta_based_unique_voi','raw');
+glm = BVQXfile('H:\MRI_Data_self_other\subjects_3000_study\3000\functional\run1\sub3000_run1_sepbeta_with_motion.glm');
+glmbbx = glm.BoundingBox;
+glm_search_str = 'sub%s_run%d_sepbeta_with_motion.glm'; % sub, run
+
+% base voi with all the regions: 
+voifn = 'vois_all_self_other_vs_rest_multi_smoothed_defined_from_run1_OnlyPeakRegions.voi';
+voi = BVQXfile(fullfile(multiDir,voifn));
+% access to NeuroElf functions
+n = neuroelf;
+
+%% extract data
+subfolders = findFilesBVQX(data_location,'3*',struct('dirs',1,'depth',1));
+runs = 2:4;
+for i = 1:length(subfolders)
+    [pn,fn] = fileparts(subfolders{i});
+    unqvoifn = sprintf('%s_unq_vois_based_on_run1_smoothed_self-other_vs_rest.voi',fn);
+    voifold = fullfile(subfolders{i},'functional','results_smoothed');
+    voisub = BVQXfile(fullfile(voifold,unqvoifn)); 
+    %% get unq voi voxels 
+    % copy VOI (from object in variable voi)
+    voisubunq = voisub.CopyObject;
+    % iterate over VOI indices
+    for vc = 1:numel(voisub.VOI)
+        
+        % assuming the GLM is in variable glm
+        voi_indices = n.bvcoordconv(voisub.VOI(vc).Voxels, 'tal2bvx', glmbbx);
+        
+        % removing NaNs first (out-of-bounding-box voxels)
+        voi_indices(isnan(voi_indices)) = [];
+        
+        % using unique, store into copy
+        voi_indices = unique(voi_indices);
+        voisubunq.VOI(vc).Voxels = n.bvcoordconv(voi_indices, 'bvx2tal', glmbbx);
+        voisubunq.VOI(vc).NrOfVoxels = numel(voi_indices);
+    end
+    %%
+    
+    for voin = 1:numel(voi.VOI)
+        for j = 1:length(runs)
+            [pn,substr] = fileparts(subfolders{i});
+            run_dir = sprintf('run%d',runs(j));
+            glmfn = sprintf(glm_search_str,substr,runs(j));
+            glm_full_path = fullfile(data_location,substr,'functional',run_dir,glmfn);
+            if exist(glm_full_path, 'file') == 2
+                glm = BVQXfile(glm_full_path);
+                [vb, vbv, vbi] = glm.VOIBetas(voisubunq,struct('vl',voin));
+                roi_data = cell2mat(vbv); % voxels x predictors.
+                explstr = 'roi_data is voxels x predictors';
+                for k = 1:glm.NrOfPredictors
+                    predict_names{k} = glm.Predictor(k).Name2;
+                end
+                fntosave = sprintf('sub-%s_run-%d_roi-%s.mat',substr,runs(j),voi.VOINames{voin});
+                fnms_fp  = fullfile(roi_data_fold,fntosave);
+                save(fnms_fp,'roi_data','predict_names','explstr','voifn','multiDir');
+                glm.ClearObject;
+            end
+        end
+    end
+end
+end
+
 function assembleDataSelfOther()
 addpath(genpath(GetFullPath( fullfile('..','..','..','Poldrack_RFX_Project','toolboxes','neuroeflf','neuroElf_v10_5153'))));
 roi_data_fold = fullfile('..','data','roi_data','raw');
+roi_data_fold = fullfile('..','data','roi_data_beta_based_unique_voi','raw');
 roi_data_save_fold = fullfile('..','data','roi_data','self-other-roi');
-mkdir(fullfile('..','data','roi_data','self-other-roi'));
+roi_data_save_fold = fullfile('..','data','roi_data_beta_based_unique_voi','self-other-roi');
+mkdir(roi_data_save_fold);
 roifns = findFilesBVQX(roi_data_fold,'*.mat');
 multiDir = 'H:\MRI_Data_self_other\subjects_3000_study\results_multi_smoothed';
 voifn = 'vois_all_self_other_vs_rest_multi_smoothed_defined_from_run1_OnlyPeakRegions.voi';
@@ -110,7 +181,7 @@ function assembleDataWords()
 addpath(genpath(GetFullPath( fullfile('..','..','..','Poldrack_RFX_Project','toolboxes','neuroeflf','neuroElf_v10_5153'))));
 roi_data_fold = fullfile('..','data','roi_data','raw');
 roi_data_save_fold = fullfile('..','data','roi_data','aronit-rashamkol-roi');
-mkdir(roi_data_save_fold); 
+mkdir(roi_data_save_fold);
 %mkdir(fullfile('..','data','roi_data','self-other-roi'));
 roifns = findFilesBVQX(roi_data_fold,'*.mat');
 multiDir = 'H:\MRI_Data_self_other\subjects_3000_study\results_multi_smoothed';
@@ -160,7 +231,7 @@ function computeMultiT()
 
 %% run multi T single subject - Non Directional
 subjects = 3000:3022;
-skipthis = 0;
+skipthis = 1;
 if ~skipthis
     for i = 1:length(subjects)% loop on subs
         sub_src_str = sprintf('data_sub-%d*.mat',subjects(i));
@@ -222,4 +293,27 @@ computesecondlevelresults(settings,params)
 
 %% plot second level results
 plot_group_results(settings,params)
+end
+
+function [voic] = getVOIunq(voi,bbx)
+%% transform VOI to be 3x3x3 (e.g. TAL resolution and not iso voxel
+% access to NeuroElf functions
+n = neuroelf;
+% copy VOI (from object in variable voi)
+voic = voi.CopyObject;
+% iterate over VOI indices
+for vc = 1:numel(voi.VOI)
+    
+    % assuming the GLM is in variable glm
+    voi_indices = n.bvcoordconv(voi.VOI(vc).Voxels, 'tal2bvx', bbx);
+    
+    % removing NaNs first (out-of-bounding-box voxels)
+    voi_indices(isnan(voi_indices)) = [];
+    
+    % using unique, store into copy
+    voi_indices = unique(voi_indices);
+    voic.VOI(vc).Voxels = n.bvcoordconv(voi_indices, 'bvx2tal', bbx);
+    voic.VOI(vc).NrOfVoxels = numel(voi_indices);
+end
+%%
 end

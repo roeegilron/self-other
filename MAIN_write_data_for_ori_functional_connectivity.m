@@ -39,11 +39,12 @@ end
 function [settings, params ] = get_settings_and_parms()
 settings.rootdir       = fullfile('..','..','..','MRI_Data_self_other','subjects_3000_study');
 settings.vtcsrcprefix  = '*THPGLMF2c_TAL.vtc';
+% settings.vtcsrcprefix  = '*TAL_SD3DVSS6.00mm.vtc'; % run on smothed data
 settings.prtprefix     = '*7conds_mar_2016*.prt';
 settings.sdmrawprefix  = '*with_motion_7_conds.sdm';
 settings.voi_use       = 'vois_all_self_other_vs_rest_multi_smoothed_defined_from_run1_OnlyPeakRegions.voi';
 settings.resultsdir    = fullfile(settings.rootdir,'results_multi_smoothed');
-settings.data_dump_dir = fullfile('..','data','roi_data_from_vtc');
+settings.data_dump_dir = fullfile('..','data','raw_flat_vtc_data_not_smoothed');
 settings.data_dump_fn  = 'raw_data_pattern_roi_trials_averaged.mat';
 settings.figfold       = fullfile('..','figures','simalarity_based_on_vtc');
 settings.voinm         = 'SPL-R';
@@ -101,7 +102,6 @@ end
 
 end
 
-
 function tc = get_flat_vtc_per_cond(settings,vtc,prt,cursub,currun)
 prtvol = prt.ConvertToVol(settings.tr);
 onsets_matrx = prtvol.OnOffsets;
@@ -116,26 +116,36 @@ for i = 3:size(prtvol.ConditionNames,1) % interesting conditions start at 3
             idxuse = [idxuse, idxs(j)-settings.pointbefore:idxs(j)+settings.pointafter];
         end
     end
+    trialLen = length(idxs(j)-settings.pointbefore:idxs(j)+settings.pointafter); 
     tc(cnt).data = zscore(vtc(:,idxuse)')'; % zscore each voxel indepednetly in time course
+    
+    databytrial  = reshape(tc(cnt).data,[size(tc(cnt).data,1), trialLen,length(idxuse)/trialLen]);
+    % data by trial is [ voxels x trial (in time points) x trial ]. last
+    % dimension is sized as number of trials, second dimension is the
+    % size of number of points in each trial 
+    
+    tc(cnt).data = databytrial;
     tc(cnt).cond = prtvol.ConditionNames{i};
     tc(cnt).cursub           = cursub; 
     tc(cnt).currun           = currun;
+    tc(cnt).explanation      = 'data dimensions are [voxels x time points x trial]';
     cnt = cnt + 1; 
 end
 end
 
 function save_tc(settings,run,map,locations)
-data_dump_dir = fullfile('..','data','data_ori');
+data_dump_dir = settings.data_dump_dir;
 evalc('mkdir(data_dump_dir)');
 %% concantenat all run data 
 for j = 1:length(run(1).tc)
     tc_concat = []; 
     for i = 1:length(run)
-        tc_concat = [tc_concat, run(i).tc(j).data];
+%         tc_concat = [tc_concat, run(i).tc(j).data];
+        save_tc_by_trial_run(settings,run(i).tc(j),map,locations); 
     end
-    tcout(j).data = tc_concat;
-    tcout(j).cond = run(i).tc(j).cond;
-    tcout(j).cursub = run(i).tc(j).cursub;
+%     tcout(j).data = tc_concat;
+%     tcout(j).cond = run(i).tc(j).cond;
+%     tcout(j).cursub = run(i).tc(j).cursub;
 end
 % print conds 
 % conds = {tcout.cond};
@@ -146,10 +156,10 @@ end
 
 % self 
 idxjoin = [4:6];
-save_tc_helper(idxjoin,tcout,map,locations,data_dump_dir,'self')
+% save_tc_helper(idxjoin,tcout,map,locations,data_dump_dir,'self')
 % other 
 idxjoin = [1:3];
-save_tc_helper(idxjoin,tcout,map,locations,data_dump_dir,'other')
+% save_tc_helper(idxjoin,tcout,map,locations,data_dump_dir,'other')
 % aronit 
 foldsave = 'aronit';
 dirsave = fullfile(data_dump_dir,foldsave);
@@ -197,4 +207,32 @@ data = data(~idxzeros,:);
 locations = locations(~idxzeros,:);
 map = getMapFromLocations(locations,map);
 save(ffs,'data','map','locations');
+end
+
+function save_tc_by_trial_run(settings,datastruc,map,locations)
+foldsave = settings.data_dump_dir;
+
+datastruc.cursub;
+datastruc.cursub;
+% get condition labels 
+switch datastruc.cond
+    case 'other_Traklin'
+        condstr = 'cond-1-Ot';
+    case 'other_arnoit'
+        condstr = 'cond-2-Oa';
+    case 'other_rashamkol'
+        condstr = 'cond-3-Or';
+    case 'self_Traklin'
+        condstr = 'cond-4-St';
+    case 'self_arnoit'
+        condstr = 'cond-5-Sa';
+    case 'self_rashamkol'
+        condstr = 'cond-6-ra';
+end
+fnsv = sprintf('%s_%s_%s.mat',datastruc.cursub,datastruc.currun,condstr);
+data = datastruc.data; 
+explainstr = datastruc.explanation;
+ffnmsave = fullfile(foldsave,fnsv);
+save(ffnmsave,...
+            'map','locations','data','explainstr'); 
 end

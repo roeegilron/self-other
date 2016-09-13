@@ -4,7 +4,6 @@ function MAIN_compute_simlarity_within_ROIs()
 clc; clear all; close all;
 [settings, params ] = get_settings_and_parms();
 subDirs = findFilesBVQX(settings.rootdir,'3*',struct('dirs',1,'depth',1)) ;
-%% create sdm's
 skipthis = 1;
 dat =[];
 if ~skipthis
