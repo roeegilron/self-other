@@ -16,18 +16,21 @@ if ~skipthis
             start = tic;
             settings.rundir  = j;
             settings.savedir = runDirs{j};
+            [cursub,currun] = get_sub_run_num(subDirs{i},runDirs{j});
 %             fprintf('sub %s run %d found:\t',...
 %                 settings.substr,settings.rundir);            
             prt     = load_prt(settings,runDirs{j});  % load prt
-            vtc     = load_vtc(settings,runDirs{j});  % load vtc
+            vtc     = load_vtc(settings,runDirs{j});  % load vtcd
             [vtcflat,locations,map] = flatten_vtc(vtc,msk);
-            [cursub,currun] = get_sub_run_num(subDirs{i},runDirs{j});
+            glm     = load_glm(settings,runDirs{j});  % load glm
+            
+            save_flat_glm_per_cond(settings,glm,cursub,currun,map,locations);  
             % get time course foo
-            run(j).tc  = get_flat_vtc_per_cond(settings,vtcflat,prt,cursub,currun);  
+%             run(j).tc  = get_flat_vtc_per_cond(settings,vtcflat,prt,cursub,currun);  
             %fprintf('sub %s run %d done in %f\n',...
 %                 settings.substr,settings.rundir,toc(start));
         end
-        save_tc(settings,run,map,locations);
+%         save_tc(settings,run,map,locations);
         fprintf('sub %s  done in %f\n',...
             settings.substr,toc(start));
     end
@@ -42,9 +45,11 @@ settings.vtcsrcprefix  = '*THPGLMF2c_TAL.vtc';
 % settings.vtcsrcprefix  = '*TAL_SD3DVSS6.00mm.vtc'; % run on smothed data
 settings.prtprefix     = '*7conds_mar_2016*.prt';
 settings.sdmrawprefix  = '*with_motion_7_conds.sdm';
+settings.glmprefix     = '*with_motion.glm';
 settings.voi_use       = 'vois_all_self_other_vs_rest_multi_smoothed_defined_from_run1_OnlyPeakRegions.voi';
 settings.resultsdir    = fullfile(settings.rootdir,'results_multi_smoothed');
 settings.data_dump_dir = fullfile('..','data','raw_flat_vtc_data_not_smoothed');
+settings.dd_beta_smod  = fullfile('..','data','raw_flat_beta_data_not_smoothed');
 settings.data_dump_fn  = 'raw_data_pattern_roi_trials_averaged.mat';
 settings.figfold       = fullfile('..','figures','simalarity_based_on_vtc');
 settings.voinm         = 'SPL-R';
@@ -83,6 +88,15 @@ function prt = load_prt(settings,rundir)
 prt = [];
 prtfn = findFilesBVQX(rundir,settings.prtprefix);
 prt = BVQXfile(prtfn{1});
+end
+
+function glm = load_glm(settings,rundir)
+% load glm
+glm = []; 
+glmfn = findFilesBVQX(rundir,settings.glmprefix);
+if ~isempty(glmfn)
+    glm = BVQXfile(glmfn{1});
+end
 end
 
 function msk = load_msk(settings)
@@ -227,7 +241,7 @@ switch datastruc.cond
     case 'self_arnoit'
         condstr = 'cond-5-Sa';
     case 'self_rashamkol'
-        condstr = 'cond-6-ra';
+        condstr = 'cond-6-Sr';
 end
 fnsv = sprintf('%s_%s_%s.mat',datastruc.cursub,datastruc.currun,condstr);
 data = datastruc.data; 
@@ -236,3 +250,48 @@ ffnmsave = fullfile(foldsave,fnsv);
 save(ffnmsave,...
             'map','locations','data','explainstr'); 
 end
+
+function save_flat_glm_per_cond(settings,glm,cursub,currun,map,locations)
+if isempty(glm) % this runs doesn't exist 
+    return; 
+end
+datadir = settings.dd_beta_smod;
+tbl = struct2table(glm.Predictor);
+glmrawdata = glm.GLMData.BetaMaps; % [dimx x dimy dimz x condition]; 
+explainstr = 'data is [voxels x trial] betas from smoothed maps';
+
+idxOt = findnonemptyidxs(strfind(tbl.Name2,'other_Traklin')) ;
+idxOa = findnonemptyidxs(strfind(tbl.Name2,'other_arnoit')) ;
+idxOr = findnonemptyidxs(strfind(tbl.Name2,'other_rashamkol')) ;
+idxSt = findnonemptyidxs(strfind(tbl.Name2,'self_Traklin')) ;
+idxSa = findnonemptyidxs(strfind(tbl.Name2,'self_arnoit')) ;
+idxSr = findnonemptyidxs(strfind(tbl.Name2,'self_rashamkol')) ;
+
+conds = {'Ot','Oa','Or','St','Sa','Sr'};
+for c = 1:length(conds) % loop on conditions 
+    fnmuse = sprintf('%s_%s_cond-%d-%s.mat',cursub,currun,c,conds{c});
+    idxget = eval(sprintf('idx%s',conds{c}));
+    dataflat = []; 
+    for t = 1:length(idxget) % loop on trials 
+        data3d = squeeze(glmrawdata(:,:,:,idxget(t)));
+        temp = reverseScoringToMatrixForFlat(data3d, locations);
+        dataflat = [dataflat , temp'];
+        clear temp data3d
+    end
+    data = dataflat; 
+    fullsvnm = fullfile(datadir,fnmuse);
+    save(fullsvnm,'data','map','locations','explainstr');
+end
+
+end
+
+function idxs = findnonemptyidxs(rawidxs)
+idxs = [];
+for i = 1:length(rawidxs)
+    if ~isempty(rawidxs{i})
+        idxs = [idxs, i];
+    end
+end
+idxs = idxs';
+end
+

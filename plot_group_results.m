@@ -2,14 +2,15 @@ function plot_group_results(settings,params)
 roinams = findFilesBVQX(fullfile(settings.resfolder,settings.grpfolder),...
     ['*' params.avgtype '*.mat'],...
     struct('maxdepth',1));
-
+nrows = 5; 
+nrcol = 4;
 hfig = figure('visible','off'); % fig for each subject
 hfig.Position = get( groot, 'Screensize' );
 for j = 1:length(roinams) % loop on rois
     effectivealpha = 0.05/length(roinams); 
     [pn,fn] = fileparts(roinams{j});
     load(roinams{j},'ansmat');
-    subplot(3,3,j); hold on;
+    subplot(nrows,nrcol,j); hold on;
     histogram(ansmat(2:end));
     scatter(ansmat(1),0,80,'r','filled')
     roinm = strrep(fn(11:end-43),'_',' ');

@@ -1,7 +1,8 @@
 function plotsinglesubresults(settings,params)
 subdirs = findFilesBVQX(settings.resfolder,[ '3*'],...
     struct('dirs',1,'maxdepth',1));
-
+nrows = 5; 
+nrcol = 4; 
 for i = 1:length(subdirs)% loop on subs 
     roifnms = findFilesBVQX(subdirs{i},'*.mat');
     hfig = figure('visible','off'); % fig for each subject 
@@ -10,7 +11,7 @@ for i = 1:length(subdirs)% loop on subs
     for j = 1:length(roifnms) % loop on rois 
         [pn,fn] = fileparts(roifnms{j});
         load(roifnms{j},'ansmat');
-        subplot(3,3,j); hold on; 
+        subplot(nrows,nrcol,j); hold on; 
         histogram(ansmat(2:end),50);
         scatter(ansmat(1),0,80,'r','filled')
         roinm = fn(5:end);

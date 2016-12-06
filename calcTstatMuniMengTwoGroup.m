@@ -23,7 +23,7 @@ numerator =  ((Nx +Ny)/2) * deltamean * dinv * deltamean' - p;
 denminatr = 2*(traceR2ofCorrDelta - (p^2/n));
 cPn = 1 +  ( traceR2ofCorrDelta/ (p^(3/2)) );
 Tstat(1) = numerator / sqrt(denminatr * cPn);
-Tstat(2) = numerator;
-Tstat(3) = sqrt(denminatr * cPn);
+%Tstat(2) = numerator;
+%Tstat(3) = sqrt(denminatr * cPn);
 
 end
