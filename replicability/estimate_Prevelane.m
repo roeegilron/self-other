@@ -8,7 +8,6 @@ initvals(3) = exp(sigma2);
 initvals(4) = mu;
 x = fminsearch(@liklihoodfunc2,initvals);
 xout = 1 /(1+exp((-1)*x(1)));
-fprintf('area %s is %f \n',name,xout);
 perc = xout; 
 
 end
