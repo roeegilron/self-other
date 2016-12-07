@@ -1,4 +1,5 @@
-function runAnalysisGroupPrevelance(settings,params)
+function runAnalysisGroupPrevelance()
+[settings,params] = get_settings_params_replicability();
 %% This runs Ruti style analyis on anatomical ROIs 
 %% Of self-other data set 
 for s = 1:length(params.subuse) % loop on subjects 

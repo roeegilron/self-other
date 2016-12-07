@@ -1,8 +1,16 @@
-function runAnalysisInfinitePrevelance(settings,params)
+function runAnalysisInfinitePrevelance(varargin)
+[settings,params] = get_settings_params_replicability();
+
 %% This runs Infinite style analyis on anatomical ROIs
 %% Of self-other data set
+if isempty(varargin)
+    roisuse = params.roisuse;
+else
+    roisuse = varargin{1}; 
+end
+
 numtrialsuse = 15:20:60;
-for r = params.roisuse % loop on rois
+for r = roisuse% loop on rois
     strtsave = tic;
     cnt = 1;
     for t = numtrialsuse
