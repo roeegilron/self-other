@@ -1,4 +1,7 @@
 function runAnalysisInfinitePrevelance(varargin)
+cd('..'); 
+addpath(genpath(pwd)); 
+cd('replicability');
 [settings,params] = get_settings_params_replicability();
 
 %% This runs Infinite style analyis on anatomical ROIs
