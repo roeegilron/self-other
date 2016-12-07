@@ -2,6 +2,6 @@ function runGroup(justwriteres)
 if ~justwriteres
 runAnalysisGroupPrevelance();
 end
-writeVMP_percents(settings,params); 
+% writeVMP_percents(settings,params); 
 
 end

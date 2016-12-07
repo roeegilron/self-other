@@ -15,6 +15,6 @@ if ~justwriteres
     end
 end
 
-writeVMP_percents(settings,params);
+% writeVMP_percents(settings,params);
 
 end

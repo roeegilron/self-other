@@ -30,7 +30,8 @@ for r = roisuse% loop on rois
     perc = estimate_Prevelane(dataprev);
     fnmsave = sprintf('roi_%.3d_inf_prev.mat',r);
     fldrsve = settings.resdir_inf_ss_prev;
-    save(fullfile(fldrsve,fnmsave),'perc');
+    save(fullfile(fldrsve,fnmsave),...
+        'perc','dataprev','numtrialsuse','settings','params');
     
     fprintf('roi %d saved in \t %f secs\n',...
         r,toc(strtsave));
