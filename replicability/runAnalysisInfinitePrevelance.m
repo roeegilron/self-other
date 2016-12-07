@@ -34,12 +34,14 @@ for r = roisuse% loop on rois
             end
         end
     end
+    fnmsave = sprintf('roi_%.3d_inf_prev.mat',r);
+    fldrsve = settings.resdir_inf_ss_prev;
+
     save(fullfile(fldrsve,fnmsave),...
         'dataprev','numtrialsuse','settings','params');
 
+    %% compute inf prevelance     
     perc = estimate_Prevelane(dataprev);
-    fnmsave = sprintf('roi_%.3d_inf_prev.mat',r);
-    fldrsve = settings.resdir_inf_ss_prev;
     save(fullfile(fldrsve,fnmsave),...
         'perc','dataprev','numtrialsuse','settings','params');
     
