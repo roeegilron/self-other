@@ -12,7 +12,7 @@ else
     roisuse = varargin{1}; 
 end
 
-numtrialsuse = 1:5:10;
+numtrialsuse = 3;
 for r = roisuse% loop on rois
     strtsave = tic;
     cnt = 1;
