@@ -15,13 +15,13 @@ params.sigma2_prog   =  linspace(1,0.5,length(5:5:params.numtrial));
 simdata = []; 
 for t = 1:length(params.numtrial_prog)
     numt = params.numtrial_prog(t); 
-    numt_signal = floor(params.percentresp * numt); 
-    numt_wosign = numt - numt_signal; 
+    nums_wisignal = floor(params.percentresp * params.numsubs); 
+    nums_wosignal = params.numsubs - nums_wisignal; 
     % create sim data: 
-    data_ws = normrnd(params.mu1, params.sigma1_prog(t),numt_signal,1);
-    data_ns = normrnd(params.mu2, params.sigma1_prog(t),numt_wosign,1);
+    data_ws = normrnd(params.mu1, params.sigma1_prog(t),nums_wisignal,1);
+    data_ns = normrnd(params.mu2, params.sigma1_prog(t),nums_wosignal,1);
     dataconcat = [data_ws ; data_ns]; 
-    numtrials  = ones(numt,1).* numt; 
+    numtrials  = ones(params.numsubs,1).* numt; 
     simdata = [simdata ; [dataconcat , numtrials]]; 
 end
 perc = estimate_Prevelane(simdata); 
