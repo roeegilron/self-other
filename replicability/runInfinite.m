@@ -17,7 +17,7 @@ if ~justwriteres
     elseif ispc
     end
 end
-
-% writeVMP_percents(settings,params);
+ansMat  = agregateResultsInifinte_regression(); 
+writeVMP_percents(ansMat,'infinite prevelance - regression method');
 
 end

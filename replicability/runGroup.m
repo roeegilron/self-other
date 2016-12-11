@@ -2,6 +2,7 @@ function runGroup(justwriteres)
 if ~justwriteres
 runAnalysisGroupPrevelance();
 end
-% writeVMP_percents(settings,params); 
+ansMat = agregateResultsRuti(); 
+writeVMP_percents(ansMat); 
 
 end
