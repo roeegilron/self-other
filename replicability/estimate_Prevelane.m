@@ -24,7 +24,7 @@ outre = p2 * normpdf(x,0,a2) + p3 * normpdf(x,0,a3) + (1-p2-p3) * normpdf(x,mu,b
 
 end
 
-function lres = liklihoodfunc(p,sigma1,sigma2,sigma3, mu)
+function lres = liklihoodfunc(p2,p3,sigma1,sigma2,sigma3, mu)
 global DATA 
 for i = 1: size(DATA,1)
     res(i) =  computeF(DATA(i,1),DATA(i,2),p2,p3,sigma1,sigma2,sigma3, mu);
@@ -48,5 +48,5 @@ sigma3 = log(sigma3star);
 result = liklihoodfunc(p2,p3,sigma1,sigma2,sigma3, mu)*(-1); % bcs maximizing 
 end
 
-function f1(x,t,p2,p3,sigma1,sigma2,,sigma3,mu)
+function f1(x,t,p2,p3,sigma1,sigma2,sigma3,mu)
 end
