@@ -1,15 +1,18 @@
 function simulateDataPrevelance()
 %% params for data simulation 
-params.numsubs       =  40; % number of subjects 
-params.percentresp   =  0.8; % percent subs responding 
-params.sigma1        =  0.5; %  real sigma 
-params.mu1           =  2; % real mu (responding subs)
+params.numsubs       =  100; % number of subjects 
+params.percentresp   =  0.5; % percent subs responding 
+params.sigma1        =  1.5; %  real sigma 
+params.mu1           =  10; % real mu (responding subs)
 params.sigma2        =  0.5; % non responding  
 params.mu2           =  0; % non responding 
-params.numtrial      =  80; % number of trials 
+params.numtrial      =  1; % number of trials 
 params.numtrial_prog =  5:5:params.numtrial; % trials sampeled  
+params.numtrial_prog =  params.numtrial; % trials sampeled  
 params.sigma1_prog   =  linspace(1,0.5,length(5:5:params.numtrial)); % sigam prog (getting smaller) 
 params.sigma2_prog   =  linspace(1,0.5,length(5:5:params.numtrial)); 
+params.sigma1_prog   =  params.numtrial; % XXX 
+params.sigma2_prog   =  params.numtrial; % XXX 
 
 %% create simulated data 
 simdata = []; 

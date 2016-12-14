@@ -6,7 +6,8 @@ runGroup(1) % 1 just write reults, 0 do heavy computation
 %% run analysis Estimation / infinite trial length 
 runInfinite(1)  
 %% run analysis Alllefeld 
-% runAnalysisAllefeldBoundedPrevelance(settings,params);
+runAllefeld(1); 
+% % runAnalysisAllefeldBoundedPrevelance(settings,params);
 % writeVMP_percents(settings,params); 
 
 end
