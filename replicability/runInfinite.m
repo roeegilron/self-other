@@ -5,7 +5,7 @@ if ~justwriteres
         runAnalysisInfinitePrevelance();
     elseif isunix
         % run each roi on a seperate cote
-        roisrun = 1:25;
+        roisrun = [5, 17, 20:20, 26:40,49,76,77,58,59];
         for i = 1:length(roisrun)
             % XXX needs work
             % make sure relative paths make sense
