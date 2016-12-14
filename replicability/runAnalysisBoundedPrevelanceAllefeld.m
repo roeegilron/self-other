@@ -14,9 +14,9 @@ for s = 1:length(params.subuse) % loop on subjects
 end
 maxTsAcrossSubs = max(ansMatAll,[],3); 
 pvals = calcPvalVoxelWise(maxTsAcrossSubs); 
-num_subs = size(ansMatAll,3); 
+num_subs = 1/size(ansMatAll,3); 
 alpha = 0.5; 
-prevelanceAllefeld = (alpha ^ num_subs - pvals.^num_subs ) ./ (1- pvals.^num_subs);
+prevelanceAllefeld = (alpha ^ num_subs - pvals ) ./ (1- pvals);
 %% XXX since not working, return 1- pvals; 
 prevelanceAllefeld = 1 - pvals; 
 manhatanPlot(psPerSub); 
