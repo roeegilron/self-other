@@ -55,7 +55,7 @@ p3      = 1 /(1+exp((-1)*p3star));
 sigma1  = exp(sigma1star); 
 sigma2  = exp(sigma2star); 
 sigma3  = exp(sigma3star); 
-[result] = liklihoodfunc(p2,p3,sigma1,sigma2,sigma3, mu); % bcs maximizing 
+[result] = liklihoodfunc(p2,p3,sigma1,sigma2,sigma3, mu) * (-1); % bcs maximizing 
 end
 
 function f1(x,t,p2,p3,sigma1,sigma2,sigma3,mu)
