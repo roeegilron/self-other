@@ -17,6 +17,16 @@ if ~justwriteres
     elseif ispc
     end
 end
+
+%% push via Pushbullet message that finished subject 
+settings.pushbullettok  = 'o.kCzZVFiDJpke3RLBIzSz4nMxQB5tcdTq';
+% get notification when sub done to cellphone see pushbullet.com 
+msgtitle = sprintf('Finished sub %.3d ',subnum);
+p = Pushbullet(settings.pushbullettok);
+secsjobtook = toc(start);
+durjob = sprintf('job took: %s',datestr(secsjobtook/86400, 'HH:MM:SS.FFF'));
+p.pushNote([],'Finished Subject ',[msgtitle  fnOut])
+
 ansMat  = agregateResultsInifinte_regression(); 
 writeVMP_percents(ansMat,'infinite prevelance - regression method');
 

@@ -5,7 +5,11 @@ for r = 1:length(params.roisuse) % loop on rois
     fldrl = settings.resdir_inf_ss_prev;
     if exist(fullfile(fldrl, fnlod), 'file');
         load(fullfile(fldrl, fnlod),'perc');
-        percents(r) = perc;
+        if ~exist('perc','var')
+            percents(r) = -2; 
+        else
+            percents(r) = perc;
+        end
         clear perc;
     else
         percents(r) = -1; 

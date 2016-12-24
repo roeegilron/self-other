@@ -10,7 +10,8 @@ for s = 1:length(params.subuse) % loop on subjects
     end
 end
 psRuti = calc_ruti_prevelance(psForRuti,params.ucutoff); 
-psRuti = calc_ruti_prevelance(psForRuti,0.3); 
+psRuti = calc_ruti_prevelance(psForRuti,0.2); 
+sigfdr = fdr_bh(psRuti,0.05,'pdep','yes');
 ansMat = psRuti; 
 
 end 

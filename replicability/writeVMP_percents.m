@@ -3,6 +3,9 @@ addpath(genpath('/Volumes/2TB_EXFAT/Poldrack_RFX_Project/toolboxes/neuroeflf/Neu
 %% write VMP percents into TAL map based on anatomical atals brain. 
 [settings,params] = get_settings_params_replicability();
 load(settings.roifilename); 
+zeridxs = ansMat==0; 
+minval = min(ansMat(~zeridxs));
+maxval = max(ansMat(~zeridxs));
 % place ansMat (percents of subjects) into corect location in 3d brain. 
 brain3d = zeros(size(labelsdata)); 
 for r = 1:length(params.roisuse)
@@ -20,9 +23,9 @@ mapttl = maptitle;
 vmpblank.MAP(curmap).Name = mapttl;
 colorToUse = [255 0 255];
 % set some map properties
-vmpblank.Map(curmap).LowerThreshold = 0;
-vmpblank.Map(curmap).UpperThreshold = 1;%XXX cutOff;
-vmpblank.Map(curmap).UseRGBColor = 1;
+vmpblank.Map(curmap).LowerThreshold = minval;
+vmpblank.Map(curmap).UpperThreshold = maxval;%XXX cutOff;
+vmpblank.Map(curmap).UseRGBColor = 0;
 vmpblank.Map(curmap).RGBLowerThreshNeg = colorToUse;
 vmpblank.Map(curmap).RGBUpperThreshNeg = colorToUse;
 vmpblank.Map(curmap).RGBLowerThreshPos = colorToUse ;

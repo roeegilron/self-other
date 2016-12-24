@@ -1,4 +1,4 @@
-function prevelanceNaive = runNaivePrevelance()
+function runGroupMaps()
 [settings,params] = get_settings_params_replicability();
 addpath(genpath(pwd));
 %% This runs Allefeld style analyis on anatomical ROIs 
@@ -9,14 +9,15 @@ for s = 1:length(params.subuse) % loop on subjects
         fldrl = settings.resdir_group_prev_ruti; 
         load(fullfile(fldrl, fnlod),'pval','ansMat'); 
         ansMatAll(r,:,s) = ansMat; % roi x shuffels x subjects. 
-        psPerSub(r,s) = calcPvalVoxelWise(ansMat); 
     end
 end
-psBoolean = psPerSub <=0.05;
-prevelanceNaive =  sum(psBoolean,2) / length(params.subuse).*100;
-prevelanceNaiveInGroupMask = prevelanceNaive;
-load('ansMatAllSubsInROIs.mat'); 
-prevelanceNaiveInGroupMask(~sigfdr) = 0; 
-writeVMP_percents(prevelanceNaiveInGroupMask,'naivePrevMaskedByGroup');
-manhatanPlot(psPerSub); 
+%% comput group maps 
+nummapscreate = 2e4; 
+[stlzerAnsMat, ~] = ...
+ createStelzerPermutations(ansMatAll,nummapscreate,'median');
+pvals = calcPvalVoxelWise(stlzerAnsMat); 
+sigfdr = fdr_bh(pvals,0.05,'pdep','yes');
+writeVMP_percents(sigfdr,'Group Prevelance');
+
 end
+
