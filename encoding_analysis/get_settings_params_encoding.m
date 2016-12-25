@@ -11,17 +11,20 @@ settings.figbehavdata            = fullfile('..','..','figures','behav_data'); %
 
 %% params 
 % cond references  1-Ot, 2-Oa, 3-Or, 4-St, 5-Sa, 6-ra
-params.cond1     = 4:6 ; %cond 1 is always subtracted first e.g. self - other 
-params.cond1name = 'self';
-params.cond2     = 1:3 ; 
-params.cond2name = 'other';
-params.suffices  = {'Ot','Oa','Or','St','Sa','Sr'};
-params.runsuse   = [1:4]; 
-params.conduse   = 1:6;
-params.runident  = 'self-other'; 
-params.subuse    = 3000:3022; 
-params.conntype  = 'corr' ; % 'eucled' 'seuclidean'
-params.roisuse   = 'atlas'; % 'atlas' = harvard cambridge 'searchlight'  = searchlight 
-params.srclightr = 125; % searchlight radius 
+params.cond1       = 4:6 ; %cond 1 is always subtracted first e.g. self - other 
+params.cond1name   = 'self';
+params.cond2       = 1:3 ; 
+params.cond2name   = 'other';
+params.suffices    = {'Ot','Oa','Or','St','Sa','Sr'};
+params.runsuse     = [1:4]; 
+params.conduse     = 1:6;
+params.runident    = 'self-other'; 
+params.subuse      = 3000:3022; 
+params.conntype    = 'corr' ; % 'eucled' 'seuclidean'
+params.roisuse     = 'searchlight'; % 'atlas' = harvard cambridge 'searchlight'  = searchlight 
+params.srclightr   = 125; % searchlight radius 
+params.behavMatUs  = 'mean'; % 'mean'. 'median','variance','medianrt'; % tyope of behav mat 
+params.dataAvg     = 'serialize'; % 'mean' = avg data across trials, 'serialize' = concatenate all trials in roi for pdist 
+params.distanceuse = 'euclidean'; % distance used for data pdist function 
 
 end
