@@ -1,4 +1,4 @@
-function writeVMP_Group(corrval,settings,params) 
+function writeVMP_Group(corrval,glocations,gmap,settings,params) 
 % set filename to save 
 
 % write data to file; 
@@ -14,7 +14,7 @@ switch params.roisuse
             params.roisuse,...
             params.dataAvg,...
             params.behavMatUs);
-        writeVMP_searchlight(corrval,mapname,settings,params);
+        writeVMP_searchlight(corrval,mapname,glocations,gmap,settings,params);
 
 end
 

@@ -1,4 +1,4 @@
-function writeVMPperSub(corrval,subnum,settings,params) 
+function writeVMPperSub(corrval,subnum,settings,params,locations,map) 
 % set filename to save 
 
 % write data to file; 
@@ -16,7 +16,7 @@ switch params.roisuse
             params.roisuse,...
             params.dataAvg,...
             params.behavMatUs); 
-        writeVMP_searchlight(corrval,mapname,settings,params); 
+        writeVMP_searchlight(corrval,mapname,locations,map,settings,params); 
 end
 
 end
