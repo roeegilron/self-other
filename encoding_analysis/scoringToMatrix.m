@@ -1,5 +1,12 @@
 function res = scoringToMatrix(mask, data, locations)
-
+%% Turn flat data into 3D for display on brain 
+% data should be 1 column vector of data 
+% mask is 3D structure of data to write 
+% locations is mapping of mask to locations 
+% check orientation of data 
+if size(data,1) == 1 % check if data is transposed, if so, flip it back 
+    data = data'; 
+end
 if ndims(mask) == 3 
     res = zeros(size(mask));
 else

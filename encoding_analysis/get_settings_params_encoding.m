@@ -20,11 +20,10 @@ params.runsuse     = [1:4];
 params.conduse     = 1:6;
 params.runident    = 'self-other'; 
 params.subuse      = 3000:3022; 
-params.conntype    = 'corr' ; % 'eucled' 'seuclidean'
-params.roisuse     = 'searchlight'; % 'atlas' = harvard cambridge 'searchlight'  = searchlight 
+params.roisuse     = 'atlas'; % 'atlas' = harvard cambridge 'searchlight'  = searchlight 
 params.srclightr   = 125; % searchlight radius 
 params.behavMatUs  = 'mean'; % 'mean'. 'median','variance','medianrt'; % tyope of behav mat 
-params.dataAvg     = 'serialize'; % 'mean' = avg data across trials, 'serialize' = concatenate all trials in roi for pdist 
+params.dataAvg     = 'mean'; % 'mean' = avg data across trials, 'serialize' = concatenate all trials in roi for pdist 
 params.distanceuse = 'euclidean'; % distance used for data pdist function 
 
 end

@@ -13,16 +13,21 @@ end
 for s = 1:length(behavmats)
     [roiidxs,numofrois] = getROIs(behavmats(s).subnum, settings, params);
     [data,labels,runslabel,labelStrFromData,locations,map] = loadData(behavmats(s).subnum,settings, params); 
+    corrval = [] ; corrpval = [] ;
     for r = 1:numofrois
         roinum = r; 
         roidata = getDataFromROI(data,labels,runslabel,roiidxs,roinum,settings, params); 
         [corrval(r),corrpval(r)]  = correlateData(roidata,labelStrFromData,labels,runslabel,behavmats(s),settings, params); 
     end
-    writeVMPperSub(corrval,behavmats(s).subnum,settings,params,glocations,gmap)
-    corrmats(:,s) = corrval'; 
-    pvalmats(:,s) = corrpval'; 
+    writeVMPperSub(corrval,behavmats(s).subnum,settings,params,locations,map)
+    groupData(s).corr      = corrval'; 
+    groupData(s).corrpval  = corrpval'; 
+    groupData(s).subnum    = behavmats(s).subnum;
+    groupData(s).locations = locations; 
+    groupData(s).map       = map; 
 end
-avgGroupCorr = mean(corrmats,2); 
+save('groupData.mat','groupData','gmap','glocations'); 
+avgGroupCorr = averageGroupData(groupData,gmap,glocations);
 writeVMP_Group(avgGroupCorr,glocations,gmap,settings,params); 
 
 
