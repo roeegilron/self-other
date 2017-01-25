@@ -33,9 +33,10 @@ xlabel('ROI #');
 ylabel('ind. sub. p-values ( -log_1_0 * pval)');
 set(findall(hfig,'-property','FontSize'),'FontSize',16,'FontName','TimeNewRoman')
 basettl = 'Manhatan Plot of individual subject p-values';
-plottitle = sprintf('%s %% %.2f subs with pval < %.3f',...
-    basettl,percentsubs,pthresh);
-title(plottitle,'FontSize',18,'FontName','TimeNewRoman');
+% plottitle = sprintf('%s %% %.2f subs with pval < %.3f',...
+%     basettl,percentsubs,pthresh);
+plottitle = basettl; 
+title(plottitle,'FontSize',18,'FontName','Helvetica');
 
 % draw 0.01 line
 puse = log10(0.01) * (-1);
