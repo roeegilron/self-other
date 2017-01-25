@@ -8,6 +8,10 @@ percSubsUndeP05 = (sum(pvals <= 0.05,2)./size(pvals,2) ) * 100;
 [percOrder,idx] = sort(percSubsUndeP05,1,'descend');
 percorderrepd = repmat(percOrder,1,size(pvals,2));
 logpvals  = log10(pvals(idx,:)).*(-1);
+%% loop on subject, ROI and change each color based on: 
+%% 1. percent subjects in roi > 0.05 
+%%  2. color each subject based on number of other ROI it passes 
+%% 3. confusion matrix of correlation of p-values to ROIs 
 % get colors 
 colorcode = reshape(percorderrepd',size(pvals,1)*size(pvals,2),1);
 cm = colormap; % returns the current color map
