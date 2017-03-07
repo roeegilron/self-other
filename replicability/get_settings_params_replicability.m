@@ -9,7 +9,7 @@ settings.roifilename             = 'harvard_atlas_short.mat';
 mkdir(settings.resdir_root); 
 settings.resdir_group_prev_ruti  = fullfile('..','..','results','Replicability','group_prevelance_ruti'); %
 mkdir(settings.resdir_group_prev_ruti); 
-settings.resdir_inf_ss_prev      = fullfile('..','..','results','Replicability','ss_infinite_prevelance'); %
+settings.resdir_inf_ss_prev      = fullfile('..','..','results','Replicability','ss_infinite_prevelance_v2'); %
 mkdir(settings.resdir_inf_ss_prev);
 
 
