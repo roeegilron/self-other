@@ -6,7 +6,7 @@ if ~justwriteres
     elseif isunix
         % run each roi on a seperate cote
         roisrun = [5, 17, 20:20, 26:40,49,76,77,58,59]; % failures first time 
-        roisrun = [     5    16    17    21    28    29    49    58    59    77];
+        roisrun = [     5        21        49    58        77];
 
         % all rois is 1:111 - can only run 1 roi / core.
 %         roisrun = 81:111;
