@@ -9,7 +9,7 @@ if ~justwriteres
         % all rois is 1:111 - can only run 1 roi / core.
         roisrun = 41:80;
         for i = 1:length(roisrun)
-            runAnalysisInfinitePrevelance(roisrun(i));
+            %runAnalysisInfinitePrevelance(roisrun(i));
             % XXX needs work
             % make sure relative paths make sense
             %% to run in parllel comment section above and uncomment section below:
