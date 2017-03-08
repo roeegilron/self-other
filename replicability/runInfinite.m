@@ -7,7 +7,7 @@ if ~justwriteres
         % run each roi on a seperate cote
         roisrun = [5, 17, 20:20, 26:40,49,76,77,58,59];
         % all rois is 1:111 - can only run 1 roi / core.
-        roisrun = 41:80;
+        roisrun = 81:111;
         for i = 1:length(roisrun)
             %runAnalysisInfinitePrevelance(roisrun(i));
             % XXX needs work
