@@ -16,7 +16,7 @@ if ~justwriteres
             % make sure relative paths make sense
             %% to run in parllel comment section above and uncomment section below:
             startmatlab = 'matlabr2016a -nodisplay -r ';
-            runprogram  = sprintf('"run runAnalysisInfinitePrevelance(%d).m; exit;" ',roisrun(i));
+            runprogram  = sprintf('"run runAnalysisInfinitePrevelance(%d,%d).m; exit;" ',roisrun(i),2);
             unix([startmatlab  runprogram ' &'])
         end
     elseif ispc
