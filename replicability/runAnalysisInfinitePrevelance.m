@@ -9,8 +9,14 @@ cd('replicability');
 %% Of self-other data set
 if isempty(varargin)
     roisuse = params.roisuse;
+    shufnum = 1; 
 else
-    roisuse = varargin{1}; 
+    roisuse = varargin{1};
+    if length(varargin) == 1
+        shufnum = 1;
+    else
+        shufnum = varargin{2};
+    end
 end
 
 numtrialsuse = 10:5:80;
@@ -24,7 +30,7 @@ for r = roisuse% loop on rois
             [data, labels] = trimdataforprev(data,labels,t);
             % makes sure there is enough trials, else , skips this subject with this num of trials
             if ~isempty(data)
-                params.numshufs = 1; % bcs we don't care about shuffels for now
+                params.numshufs = shufnum; % bcs we don't care about shuffels for now
                 [pval, ansMat] = run_MultiT2013_On_ROI(data,labels,settings,params); % for ruti
                 dataprev(cnt,1) = ansMat(1);
                 dataprev(cnt,2) = t;
@@ -34,7 +40,11 @@ for r = roisuse% loop on rois
             end
         end
     end
-    fnmsave = sprintf('roi_%.3d_inf_prev.mat',r);
+    if params.numshufs ~= 1 
+        fnmsave = sprintf('roi_%.3d_shuf_%.3d_inf_prev.mat',r);
+    else
+        fnmsave = sprintf('roi_%.3d_inf_prev.mat',r);
+    end
     fldrsve = settings.resdir_inf_ss_prev;
 
     save(fullfile(fldrsve,fnmsave),...
