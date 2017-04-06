@@ -41,7 +41,7 @@ for r = roisuse% loop on rois
         end
     end
     if params.numshufs ~= 1 
-        fnmsave = sprintf('roi_%.3d_shuf_%.3d_inf_prev.mat',r);
+        fnmsave = sprintf('roi_%.3d_shuf_%.3d_inf_prev.mat',r,shufnum);
     else
         fnmsave = sprintf('roi_%.3d_inf_prev.mat',r);
     end
