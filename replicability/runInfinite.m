@@ -4,7 +4,7 @@ if ~justwriteres
         % loop on all rois, testing
         runAnalysisInfinitePrevelance();
     elseif isunix
-        % run each roi on a seperate cote
+        % run each roi on a seperate core
         roisrun = [5, 17, 20:20, 26:40,49,76,77,58,59];
         for i = 1:length(roisrun)
             % XXX needs work
