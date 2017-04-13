@@ -20,9 +20,9 @@ else
 end
 
 numtrialsuse = 10:5:80;
-for ss = 1:100
+for ss = 1:50
     shufnum = ss; 
-    numtrialsuse = 80; %%%% XXXX %%%%
+%     numtrialsuse = 80; %%%% XXXX %%%%
     for r = roisuse% loop on rois
         strtsave = tic;
         cnt = 1;
@@ -44,7 +44,7 @@ for ss = 1:100
             end
         end
         if params.numshufs ~= 1
-            fnmsave = sprintf('roi_%.3d_shuf_%.3d_inf_prev_80trials.mat',r,shufnum);
+            fnmsave = sprintf('roi_%.3d_shuf_%.3d_inf_prev_alltrials.mat',r,shufnum);
         else
             fnmsave = sprintf('roi_%.3d_inf_prev.mat',r);
         end
