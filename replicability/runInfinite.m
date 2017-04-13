@@ -8,6 +8,7 @@ if ~justwriteres
         roisrun = [5, 17, 20:20, 26:40,49,76,77,58,59]; % failures first time 
         roisrun = [     5        21        49    58        77];
         roisrun = [1:20]; 
+        roisrun = [28 29 48 49 50 51 66 67 110 111 11 14 1]; 
         % all rois is 1:111 - can only run 1 roi / core.
 %         roisrun = 81:111;
         for i = 1:length(roisrun)
