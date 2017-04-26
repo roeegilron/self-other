@@ -43,5 +43,4 @@ for r = roisuse% loop on rois
     fprintf('\n\n');
 end
 
-
 end

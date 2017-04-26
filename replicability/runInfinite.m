@@ -11,7 +11,8 @@ if ~justwriteres
         % run each roi on a seperate cote
         roisrun = [5, 17, 20:20, 26:40,49,76,77,58,59]; % failures first time 
         roisrun = [     5        21        49    58        77];
-
+        roisrun = [1:20]; 
+        roisrun = [28 29 48 49 50 51 66 67 110 111 11 14 1]; 
         % all rois is 1:111 - can only run 1 roi / core.
 %         roisrun = 81:111;
 >>>>>>> e383929abeee0aa213edba4e60cd1e510e15fa6a
@@ -21,7 +22,7 @@ if ~justwriteres
             % make sure relative paths make sense
             %% to run in parllel comment section above and uncomment section below:
             startmatlab = 'matlabr2016a -nodisplay -r ';
-            runprogram  = sprintf('"run runAnalysisInfinitePrevelance(%d).m; exit;" ',roisrun(i));
+            runprogram  = sprintf('"run runAnalysisInfinitePrevelance(%d,%d).m; exit;" ',roisrun(i),2);
             unix([startmatlab  runprogram ' &'])
         end
     elseif ispc
