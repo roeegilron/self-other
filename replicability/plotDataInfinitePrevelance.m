@@ -4,10 +4,12 @@ function plotDataInfinitePrevelance()
 % loop on ROI's
 load('harvard_atlas_short.mat');
 rois = 1:111;
+rois = [2 3 4 6 7 8 1- 11 12 ] ; % XXXX 
 subjects = 1:23;
 % get max multi-t value
 for r = 1:length(rois)
     fn = sprintf('roi_%0.3d_inf_prev.mat',rois(r));
+    fn = sprintf('roi_%.3d_shuf_%.3d_inf_prev.mat',rois(r),2); % XXX 
     try
         load(fullfile(settings.resdir_inf_ss_prev,fn));
         maxt(r) = max(dataprev(:,1)); 
@@ -19,10 +21,11 @@ end
 
 maxtt = max(maxt); 
 %% box plots 
-skipthis = 1; 
+skipthis = 0; 
 if ~skipthis 
 for r = 1:length(rois)
     fn = sprintf('roi_%0.3d_inf_prev.mat',rois(r));
+    fn = sprintf('roi_%.3d_shuf_%.3d_inf_prev.mat',rois(r),2); % XXX 
     try
         load(fullfile(settings.resdir_inf_ss_prev,fn));
         figname = sprintf('box-plots-across-subs_-%0.3d',rois(r));
@@ -49,13 +52,14 @@ end
 end
 
 %% line plots 
-skipthis = 1; 
+skipthis = 0; 
 if ~skipthis 
 for i = 1:length(numtrialsuse)
     fprintf('%d subs in %d trials\n',sum(dataprev(:,2)==numtrialsuse(i)),numtrialsuse(i));
 end
 for r = 1:length(rois)
     fn = sprintf('roi_%0.3d_inf_prev.mat',rois(r));
+    fn = sprintf('roi_%.3d_shuf_%.3d_inf_prev.mat',rois(r),2); % XXX 
     try
         load(fullfile(settings.resdir_inf_ss_prev,fn));
         figname = sprintf('line-plots-across-subs_-%0.3d',rois(r));
@@ -92,11 +96,13 @@ end
 
 %% line pltos per subject 
 rois = [110 111]; 
+rois = [2 3 4 6 7 8 1- 11 12 ] ; % XXXX 
 for i = 1:length(numtrialsuse)
     fprintf('%d subs in %d trials\n',sum(dataprev(:,2)==numtrialsuse(i)),numtrialsuse(i));
 end
 for r = 1:length(rois)
     fn = sprintf('roi_%0.3d_inf_prev.mat',rois(r));
+    fn = sprintf('roi_%.3d_shuf_%.3d_inf_prev.mat',rois(r),2); % XXX 
     try
         load(fullfile(settings.resdir_inf_ss_prev,fn));
         figname = sprintf('llline-plots-within-subs_-%0.3d',rois(r));

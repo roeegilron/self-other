@@ -4,9 +4,19 @@ if ~justwriteres
         % loop on all rois, testing
         runAnalysisInfinitePrevelance();
     elseif isunix
+<<<<<<< HEAD
         % run each roi on a seperate core
         roisrun = [5, 17, 20:20, 26:40,49,76,77,58,59];
+=======
+        % run each roi on a seperate cote
+        roisrun = [5, 17, 20:20, 26:40,49,76,77,58,59]; % failures first time 
+        roisrun = [     5        21        49    58        77];
+
+        % all rois is 1:111 - can only run 1 roi / core.
+%         roisrun = 81:111;
+>>>>>>> e383929abeee0aa213edba4e60cd1e510e15fa6a
         for i = 1:length(roisrun)
+            %runAnalysisInfinitePrevelance(roisrun(i));
             % XXX needs work
             % make sure relative paths make sense
             %% to run in parllel comment section above and uncomment section below:

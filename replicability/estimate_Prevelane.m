@@ -8,7 +8,9 @@ initvals(3) = log(sigma1);
 initvals(4) = log(sigma2);
 initvals(5) = log(sigma3); 
 initvals(6) = mu;
-
+% options = optimset('Display','final','PlotFcns',@optimplotfval); % to plot 
+% options = optimset('Display','final'); % to plot 
+% [x] = fminsearch(@liklihoodfunc2,initvals,options);
 [x] = fminsearch(@liklihoodfunc2,initvals);
 p2out = 1 /(1+exp((-1)*x(1)));
 p3out = 1 /(1+exp((-1)*x(2)));
@@ -16,13 +18,14 @@ sig1  = exp(x(3));
 sig2  = exp(x(4));
 sig3  = exp(x(5));
 mu    = exp(x(6));
+
 % return percent subjects with effect 
 perc = 1 - p2out - p3out; 
-
 end
 
 
 function[outre] =  computeF(x,t,p2,p3,sigma1,sigma2,sigma3, mu)
+%% create another version, 
 if p2 + p3 > 1 
     outre = -inf; 
     return; 
