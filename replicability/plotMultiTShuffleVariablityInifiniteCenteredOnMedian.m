@@ -28,6 +28,7 @@ rois = 1:111;
 load('temp.mat'); 
 
 rois = 1:111;
+rois = 60;
 for r = rois
     hfig = figure;
     hfig.Position = [151         215        1535        1083];
@@ -48,7 +49,7 @@ for r = rois
         40,[1 0 0],'o','filled','MarkerFaceAlpha',0.5);
     centeredPrevForEst(:,1) = realdata; 
     centeredPrevForEst(:,2) = repmat(80,length(realdata),1);
-    percest(r) = estimate_Prevelane(centeredPrevForEst);
+    [percest(r), sig1(r), mucent(r)] = estimate_Prevelane(centeredPrevForEst);
     titletxt = sprintf('%s computed inf prev = %f',...
         'Var in Shuf. W/subs cen. on Median',...
         percest(r));

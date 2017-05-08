@@ -1,4 +1,4 @@
-function perc = estimate_Prevelane(data)
+function [perc, sig1, mu] = estimate_Prevelane(data)
 global DATA
 DATA = data;
 p2 = 0.3; p3=0.3; sigma1 = 1; sigma2 = 1; sigma3 = 1; mu = 1;
