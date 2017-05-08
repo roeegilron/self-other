@@ -12,7 +12,8 @@ cd('replicability');
 
 numtrialsuse = 10:5:80;
 numtrialsuse = 80;
-roisuse = 1:111; % XXX 
+roisuse = 1:111; % XXX
+% params.subuse = [3000:3005];
 for ss = 1
     shufnum = ss; 
 %     numtrialsuse = 80; %%%% XXXX %%%%
@@ -41,9 +42,12 @@ for ss = 1
                 cnt = cnt +1 ;
             end
         end
+        [perc(r), sig1, sig4, mu] = estimate_Prevelane2(dataprev);
+        fprintf('roi %d done in %f \n',...
+            r, toc(strtsave));
+
+        clear dataprev;
     end
-    [perc(r), sig1, sig4, mu] = estimate_Prevelane2(dataprev);
-    clear dataprev; 
 end
 save('temp_prev_cv.mat','perc');
 end
