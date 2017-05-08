@@ -11,6 +11,9 @@ settings.resdir_group_prev_ruti  = fullfile('..','..','results','Replicability',
 mkdir(settings.resdir_group_prev_ruti); 
 settings.resdir_inf_ss_prev      = fullfile('..','..','results','Replicability','ss_infinite_prevelance_v2'); %
 mkdir(settings.resdir_inf_ss_prev);
+settings.resdir_inf_ss_prev_cv   = fullfile('..','..','results','Replicability','ss_infinite_prevelance_v-cross_validate'); %
+mkdir(settings.resdir_inf_ss_prev);
+
 
 
 

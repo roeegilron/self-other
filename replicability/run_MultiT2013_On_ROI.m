@@ -1,7 +1,6 @@
 function [pval, ansMat] = run_MultiT2013_On_ROI(data,labels,settings,params)
-params.numshufs = 400;
 labelsuse = labels; 
-for s = 1:params.numshufs
+for s = 1:params.numshufs + 1
     if s == 1 
         ansMat(:,1) = calcTstatMuniMengTwoGroup_v2(data(labelsuse==1,:),data(labelsuse==2,:));
     else
