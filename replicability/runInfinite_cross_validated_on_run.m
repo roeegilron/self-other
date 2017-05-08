@@ -5,6 +5,7 @@ if ismac
 elseif isunix
     roisrun = [28 29 48 49 50 51 66 67 110 111 11 14 1];
     roisrun = 1:30; 
+    roisrun = input('which rois to run?\n'); 
     for i = 1:length(roisrun)
         %% to run in parllel comment section above and uncomment section below:
         startmatlab = 'matlabr2016a -nodisplay -r ';
