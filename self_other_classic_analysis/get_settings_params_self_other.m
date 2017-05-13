@@ -13,6 +13,9 @@ settings.resdir_inf_ss_prev      = fullfile('..','..','results','Replicability',
 mkdir(settings.resdir_inf_ss_prev);
 settings.resdir_inf_ss_prev_cv   = fullfile('..','..','results','Replicability','ss_infinite_prevelance_v-cross_validate'); %
 mkdir(settings.resdir_inf_ss_prev);
+settings.resdir_ss_prev_cv   = fullfile('..','..','results','Replicability','ss_sl_v-cross_validate'); %
+mkdir(settings.resdir_ss_prev_cv);
+
 
 
 

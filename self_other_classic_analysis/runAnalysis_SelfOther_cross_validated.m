@@ -34,11 +34,17 @@ for ucv = 1:length(unqruns)
     end
     fprintf('sub %d took %f to run %d shufs in one cv run\n',...
         subuse,toc(cvtimer), params.numshufs);
-
 end
+mask = mapclean; 
+locations = locationsclean;
+fnsmv = sprintf('ND_FFX_s-%s_shufs-%d_cross_validate_newMultit.mat',...
+    subuse,params.numshufs);
+fldrsv = settings.resdir_ss_prev_cv;
+fnmsvfull = fullfile(fldrsv,fnsmv); 
+save(fnmsvfull,'ansMat','mask','locations'); 
+
 fprintf('sub %d took %f to run %d shufs\n',...
     subuse,toc(startrun), params.numshufs);
-x = 2; 
 
 end
 
