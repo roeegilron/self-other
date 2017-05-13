@@ -5,6 +5,7 @@ if ismac
 elseif isunix
     [settings,params] = get_settings_params_self_other();
     subsuse = params.subuse;
+    subsuse = subsuse(1:12); 
     for s = 1:length(subsuse)
         %runAnalysisInfinitePrevelance(roisrun(i));
         % XXX needs work

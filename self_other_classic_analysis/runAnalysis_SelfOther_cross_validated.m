@@ -1,6 +1,6 @@
 function runAnalysis_SelfOther_cross_validated(varargin)
 %% this function averages multi-t scores across runs 
-maxNumCompThreads(5);
+maxNumCompThreads(3);
 cd('..');
 addpath(genpath(pwd));
 cd('self_other_classic_analysis');
