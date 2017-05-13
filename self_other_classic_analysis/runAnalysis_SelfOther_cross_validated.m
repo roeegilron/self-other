@@ -37,11 +37,12 @@ for ucv = 1:length(unqruns)
 end
 mask = mapclean; 
 locations = locationsclean;
-fnsmv = sprintf('ND_FFX_s-%d_shufs-%d_cross_validate_newMultit.mat',...
+ansMatStrucExplain = 'ansMat is voxels x shuffels x run (cross validation)';
+fnsmv = sprintf('1ND_FFX_s-%d_shufs-%d_cross_validate_newMultit.mat',...
     subuse,params.numshufs);
 fldrsv = settings.resdir_ss_prev_cv;
 fnmsvfull = fullfile(fldrsv,fnsmv); 
-save(fnmsvfull,'ansMat','mask','locations'); 
+save(fnmsvfull,'ansMat','mask','locations','ansMatStrucExplain'); 
 
 fprintf('sub %d took %f to run %d shufs\n',...
     subuse,toc(startrun), params.numshufs);
