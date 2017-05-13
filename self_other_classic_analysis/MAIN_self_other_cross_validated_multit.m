@@ -12,7 +12,7 @@ if ~justwriteres
             % make sure relative paths make sense
             %% to run in parllel comment section above and uncomment section below:
             startmatlab = 'matlabr2016a -nodisplay -r ';
-            runprogram  = sprintf('"run runAnalysisInfinitePrevelance(%d).m; exit;" ',subsuse(s));
+            runprogram  = sprintf('"run runAnalysis_SelfOther_cross_validated(%d).m; exit;" ',subsuse(s));
             unix([startmatlab  runprogram ' &'])
         end
     elseif ispc
