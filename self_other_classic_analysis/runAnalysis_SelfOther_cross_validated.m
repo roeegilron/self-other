@@ -42,7 +42,7 @@ fnsmv = sprintf('1ND_FFX_s-%d_shufs-%d_cross_validate_newMultit.mat',...
     subuse,params.numshufs);
 fldrsv = settings.resdir_ss_prev_cv;
 fnmsvfull = fullfile(fldrsv,fnsmv); 
-save(fnmsvfull,'ansMat','mask','locations','ansMatStrucExplain'); 
+save(fnmsvfull,'ansMat','mask','locations','ansMatStrucExplain','subuse'); 
 
 fprintf('sub %d took %f to run %d shufs\n',...
     subuse,toc(startrun), params.numshufs);
