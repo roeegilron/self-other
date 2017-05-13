@@ -1,6 +1,6 @@
 function runAnalysis_SelfOther_cross_validated(varargin)
 %% this function averages multi-t scores across runs 
-maxNumCompThreads(1);
+maxNumCompThreads(5);
 cd('..');
 addpath(genpath(pwd));
 cd('self_other_classic_analysis');
@@ -46,6 +46,13 @@ save(fnmsvfull,'ansMat','mask','locations','ansMatStrucExplain');
 
 fprintf('sub %d took %f to run %d shufs\n',...
     subuse,toc(startrun), params.numshufs);
+
+%% report job done
+settings.pushbullettok  = 'o.kCzZVFiDJpke3RLBIzSz4nMxQB5tcdTq';
+% get notification when sub done to cellphone see pushbullet.com 
+msgtitle = sprintf('Finished sub %.3d ',subuse);
+p = Pushbullet(settings.pushbullettok);
+p.pushNote([],'Finished Subject ',[msgtitle ])
 
 end
 
