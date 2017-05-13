@@ -46,5 +46,5 @@ fnms = sprintf('ROI_mt_anylsis_%s_vs_%s_%s_smoothed.mat',...
 params.fnms = fnms; 
 params.ucutoff  = 0.5; % u cutoff for Ruti.
 params.regionSize = 40; 
-params.numshufs   = 3; 
+params.numshufs   = 100; 
 end
