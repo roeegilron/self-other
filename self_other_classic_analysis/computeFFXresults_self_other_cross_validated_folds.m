@@ -76,7 +76,7 @@ else
         ff = findFilesBVQX(ffxResFold,subStrSrc);
         if ~isempty(ff) % file doesn't exist
             load(ff{1},'mask','locations')
-            if i == 3000
+            if cntsub == 1
                 mapout = logical(mask);
             else
                 mapout = mapout & logical(mask);
