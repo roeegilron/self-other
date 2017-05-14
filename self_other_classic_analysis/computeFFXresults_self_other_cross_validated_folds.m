@@ -50,6 +50,7 @@ subsExtracted = params.subuse;
 save(fullfile(outDir,fnTosave),...
     'pval','locations','map','fnTosave','ansMatReal','subsExtracted',...
     'pvalsOut');
+
 end
 
 function [ansMatOut,locations,map] = extractAndAverageData()
@@ -78,7 +79,8 @@ else
         else
             mapout = mapout & logical(mask);
         end
-        fprintf('sub %s extracted in %f\n',subStrSrc,toc(start));
+        fprintf('sub %s %d voxels extracted in %f\n',subStrSrc,...
+            sum(mask(:)), toc(start));
     end
     locationsgood = getLocations(mapout);
     

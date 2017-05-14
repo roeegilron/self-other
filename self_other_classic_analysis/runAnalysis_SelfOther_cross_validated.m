@@ -12,10 +12,15 @@ else
     subuse = varargin{1}; 
 end
 
-[data, labels, runag,map] = getDataPerSubAllBrain(subuse,settings,params);
+for i = params.subuse
+    fprintf('sub %d ',i);
+    % [data, labels, runag,map] = getDataPerSubAllBrain(subuse,settings,params);
+    [data, labels, runag,map] = getDataPerSubAllBrain(i,settings,params);
+    [dataclean, mapclean, locationsclean] = cleanData(data,runag, map);
+end
+
 locations = getLocations(map);
 % take zeros out of data by run, labels 
-[dataclean, mapclean, locationsclean] = cleanData(data,runag, map);
 idx = knnsearch(locationsclean, locationsclean, 'K', params.regionSize);
 unqruns = unique(runag);
 startrun = tic; 
@@ -69,24 +74,5 @@ else
 end
 end
 
-function [dataout, mapout, locationsout] = cleanData(data,runag, map)
-dataout = []; mapout = [] ; badidx = [];
-unqruns = unique(runag);
-for ucv = 1:length(unqruns)
-    data_cv = data(runag == unqruns(ucv),:);
-    zerocnt = data_cv == 0;
-    zercntmat = sum(zerocnt,1); % a bad voxel has more than 10 zeros 
-    badidx = [badidx; find(zercntmat > 10)'];     
-end
-badidx = unique(badidx); 
-locations = getLocations(map);
-goodidx   = setdiff(1:size(locations,1),badidx);
-locationsout =  locations(goodidx,:);
-mapout = zeros(size(map));
-for i = 1:size(locationsout,1)
-    mapout(locations(i,1),locations(i,2),locations(i,3)) = 1;
-end
-dataout = data(:,goodidx);
 
-end
 
