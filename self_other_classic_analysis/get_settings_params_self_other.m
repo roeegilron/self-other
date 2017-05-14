@@ -34,7 +34,6 @@ params.runident  = 'self-other';
 params.subuse    = 3000:3022; 
 params.conntype  = 'corr' ; % 'eucled' 'seuclidean'
 params.roisuse   = 1:111; % rois, TAL atlas. 
-params.numshufs  = 3;
 params.prevjumps = 15; % for infinite prevelance 
 params.intialval = 10; % number of trials needed to start analysis 
 % get save variable name 

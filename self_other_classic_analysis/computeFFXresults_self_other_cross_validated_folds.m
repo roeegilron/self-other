@@ -5,7 +5,6 @@ function computeFFXresults_self_other_cross_validated_folds()
 slsize = 50;
 cntSubs = length(params.subuse);
 ffxResFold = settings.resdir_ss_prev_cv;
-params.numshufs = 100;
 outDir = settings.resdir_ss_prev_cv;
 numMaps = 5e3;
 fold = 4; % 4 runs
@@ -58,7 +57,6 @@ function [ansMatOut,locations,map] = extractAndAverageData()
 slsize = 50;
 cntSubs = length(params.subuse);
 ffxResFold = settings.resdir_ss_prev_cv;
-params.numshufs = 3;
 outDir = settings.resdir_ss_prev_cv;
 numMaps = 20;
 fold = 4; % 4 runs
