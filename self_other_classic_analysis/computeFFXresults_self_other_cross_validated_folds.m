@@ -84,8 +84,8 @@ else
             fprintf('sub %s %d voxels extracted in %f\n',subStrSrc,...
                 sum(mask(:)), toc(start));
             subsfound(cntsub) = i; 
+            cntsub = cntsub + 1;
         end
-        cntsub = cntsub + 1; 
     end
     locationsgood = getLocations(mapout);
     
