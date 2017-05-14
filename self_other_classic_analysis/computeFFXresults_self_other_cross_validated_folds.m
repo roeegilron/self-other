@@ -69,18 +69,23 @@ if exist(fullfnm,'file')
     load(fullfnm);
 else
     %% get 3d mask from each subject
+    cntsub = 1; 
     for i = params.subuse
         start = tic;
         subStrSrc = sprintf(srcpat,i,params.numshufs);
         ff = findFilesBVQX(ffxResFold,subStrSrc);
-        load(ff{1},'mask','locations')
-        if i == 3000
-            mapout = logical(mask);
-        else
-            mapout = mapout & logical(mask);
+        if ~isempty(ff) % file doesn't exist
+            load(ff{1},'mask','locations')
+            if i == 3000
+                mapout = logical(mask);
+            else
+                mapout = mapout & logical(mask);
+            end
+            fprintf('sub %s %d voxels extracted in %f\n',subStrSrc,...
+                sum(mask(:)), toc(start));
+            subsfound(cntsub) = i; 
         end
-        fprintf('sub %s %d voxels extracted in %f\n',subStrSrc,...
-            sum(mask(:)), toc(start));
+        cntsub = cntsub + 1; 
     end
     locationsgood = getLocations(mapout);
     
@@ -94,19 +99,22 @@ else
         start = tic;
         subStrSrc = sprintf(srcpat,i,params.numshufs);
         ff = findFilesBVQX(ffxResFold,subStrSrc);
-        load(ff{1},'ansMat','mask','locations')
-        % average cross validation folds:
-        ansMatAvg = mean(ansMat,3);
-        % loop on shuffels, put each in 3D move back to 2D
-        for s = 1:size(ansMatAvg,2)
-            tempDat3D = scoringToMatrix(mask, ansMatAvg(:,s), locations);
-            ansMatOut(:,s,cnt) = reverseScoringToMatrixForFlat(tempDat3D, locationsgood);
+        if ~isempty(ff) % if sub doesn't exist report that 
+            load(ff{1},'ansMat','mask','locations')
+            % average cross validation folds:
+            ansMatAvg = mean(ansMat,3);
+            % loop on shuffels, put each in 3D move back to 2D
+            for s = 1:size(ansMatAvg,2)
+                tempDat3D = scoringToMatrix(mask, ansMatAvg(:,s), locations);
+                ansMatOut(:,s,cnt) = reverseScoringToMatrixForFlat(tempDat3D, locationsgood);
+            end
+            subsfound(cnt) = i; 
+            cnt = cnt + 1;
+            fprintf('sub %s averaged and extracted in %f\n',subStrSrc,toc(start));
         end
-        cnt = cnt + 1;
-        fprintf('sub %s averaged and extracted in %f\n',subStrSrc,toc(start));
     end
     map = mapout; 
     locations = locationsgood; 
-    save(fullfnm,'ansMatOut','map','locations'); 
+    save(fullfnm,'ansMatOut','map','locations','subsfound'); 
 end
 end
