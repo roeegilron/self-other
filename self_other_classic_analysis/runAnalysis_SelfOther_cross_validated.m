@@ -19,6 +19,7 @@ locations = getLocations(map);
 idx = knnsearch(locationsclean, locationsclean, 'K', params.regionSize);
 unqruns = unique(runag);
 startrun = tic; 
+pool = parpool('local',20); 
 for ucv = 1:length(unqruns)
     data_cv = dataclean(runag == unqruns(ucv),:);
     % extract zeros from data:
@@ -27,7 +28,7 @@ for ucv = 1:length(unqruns)
     cvtimer = tic;
     for sl = 1:size(idx,1)  % loop on sl 
         datause = data_cv(:,idx(sl,:));
-        for s = 1: params.numshufs + 1 
+        parfor s = 1: params.numshufs + 1 
             labelsuse = getlabels(labels_cv,s,ucv); 
             ansMat(sl,s,ucv) = calcTstatMuniMengTwoGroup_v2(datause(labelsuse==1,:),datause(labelsuse==2,:));
         end
