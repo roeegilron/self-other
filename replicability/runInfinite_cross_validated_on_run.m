@@ -9,7 +9,7 @@ elseif isunix
     for i = 1:length(roisrun)
         %% to run in parllel comment section above and uncomment section below:
         startmatlab = 'matlabr2016a -nodisplay -r ';
-        runprogram  = sprintf('"run runAnalysisInfinitePrevelance_cross_validated(%d).m; exit;" ',roisrun(i));
+        runprogram  = sprintf('"run runAnalysisInfinitePrevelance_cross_validated_save_only(%d).m; exit;" ',roisrun(i));
         unix([startmatlab  runprogram ' &'])
     end
 elseif ispc

@@ -9,6 +9,10 @@ for s = 1:params.numshufs + 1
     end
 end
 
-pval = calcPvalVoxelWise(ansMat); 
+if s > 1 
+    pval = calcPvalVoxelWise(ansMat); 
+else
+    pval = [];
+end
 
 end
